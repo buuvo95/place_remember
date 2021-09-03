@@ -6,27 +6,34 @@ from .models import Memory
 from .forms import MemoryModelForm
 
 def home_view(request):
+    """
+    Home view
+    """
     context = {'memories':[]}
     if request.user.is_authenticated:
         context['user'] = request.user
-    # Do something for authenticated users.
-        # try:
-        memories = Memory.objects.filter(user = request.user).first()
-        context['memories'].append(memories)
-        return render(request, "myapp/home.html", {'context': context})
-        # except:
-        #     context['mess'] = "YOU HAVE NO MEMORIES"
-        #     return render(request, "myapp/home.html", {'context': context})
+        try:
+            memories = Memory.objects.filter(user = request.user)
+            for memory in memories:
+                context['memories'].append(memory)
+            if len(context['memories']) != 0:
+                return render(request, "myapp/home.html", {'context': context})
+            else:
+                context['mess'] = "YOU HAVE NO MEMORIES"
+                return render(request, "myapp/home.html", {'context': context})
+        except:
+            context['mess'] = "YOU HAVE NO MEMORIES"
+            return render(request, "myapp/home.html", {'context': context})
     else:
-        # Do something for anonymous users.
         context['mess'] = "YOU HAVE TO LOGIN"
         return render(request, "myapp/home.html", {'context': context})
     
 def create_view(request):
+    """
+    Create View
+    """
     if request.user.is_authenticated:
         context ={}
-    
-        # add the dictionary during initialization
         form = MemoryModelForm(request.POST)
         if form.is_valid():
             form.instance.user = request.user
