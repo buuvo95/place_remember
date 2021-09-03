@@ -1,0 +1,76 @@
+<!-- templates/registration/home.html -->
+{% extends "base.html" %}
+{% block title %}
+Home
+{% endblock title %}
+{% block content %}
+
+    {% if context.user.is_authenticated %}
+        {% if context.mess %}
+            <section class="text-gray-600 body-font overflow-hidden">
+                <div class="flex h-screen">
+                    <div class="m-auto">
+                        <div class="flex justify-center mb-5">
+                            <div class="text-center">
+                                <h1 class="text-green-600 text-3xl">{{ context.mess }}</h1>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mb-5">
+                            <div class="text-center">
+                                <a href="{% url 'app:create' %}">
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        ADD A MEMORY
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+            </section>
+
+        {% else %}
+
+            {% for memory in context.memories %}
+                <section class="text-gray-600 body-font overflow-hidden">
+                    <div class="container px-5 py-24 mx-auto">
+                        <div class="-my-8 divide-y-2 divide-gray-100">
+                            <div class="py-8 flex flex-wrap md:flex-nowrap">
+                                <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                                    <span class="font-semibold title-font text-gray-700">{{memory.name}}</span>
+                                    <span class="mt-1 text-gray-500 text-sm">{{memory.address}}</span>
+                                </div>
+                                <div class="md:flex-grow">
+                                    <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{memory.comment}}</h2>
+                                    <a href="{% url 'app:delete' memory.pk %}" class="ml-3 text-red-600">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        <section class="text-gray-600 body-font overflow-hidden">
+            <div class="flex h-screen">
+                <div class="m-auto">
+                    <div class="flex justify-center mb-5">
+                        <div class="text-center">
+                            <h1 class="text-green-600 text-3xl">{{ context.mess }}</h1>
+                        </div>
+                    </div>
+                    <div class="flex justify-center mb-5">
+                        <div class="text-center">
+                            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Login with Facebook
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+{% endblock content %}
