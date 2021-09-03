@@ -41,6 +41,7 @@ Home
                                 </div>
                                 <div class="md:flex-grow">
                                     <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{memory.comment}}</h2>
+                                    <a href="{% url 'app:create' %}" class="ml-3 text-green-600">New memory</a>
                                     <a href="{% url 'app:delete' memory.pk %}" class="ml-3 text-red-600">Delete</a>
                                 </div>
                             </div>
